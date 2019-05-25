@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class ArticleDaoJPA implements Dao<Article, NewArticle>{
 
     private EntityManager em;
@@ -49,8 +50,8 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
 
     @Override
     public void delete(long id) {
-        ArticleEntity ae = getEntity(id)
-        em.geTransaction().begin();
+        ArticleEntity ae = getEntity(id);
+        em.getTransaction().begin();
         em.remove(ae);
         em.getTransaction().commit();
 
@@ -68,7 +69,7 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
         ArticleEntity a;
          a = (ArticleEntity) em.createNativeQuery("Select a from ArticleEntity a where id = " +
                 id).getSingleResult();
-        em.getTransaction.commit();
+        em.getTransaction().commit();
         return a;
     }
 }

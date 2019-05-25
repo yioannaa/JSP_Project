@@ -49,7 +49,7 @@ public class ArticleServlet extends HttpServlet {
 
         switch (action) {
             case "viewAll": {
-                req.setAttribute("articles", repo.getAll().asJava());
+                req.setAttribute("articles", repo.getAll());  //asJava()) if vavr;
                 RequestDispatcher rd = req.getRequestDispatcher("view_articles.jsp");
                 rd.forward(req, resp);
             }
