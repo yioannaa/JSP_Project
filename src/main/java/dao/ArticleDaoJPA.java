@@ -21,7 +21,7 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     @Override
     public List<Article> getAll() {
         em.getTransaction().begin();
-        Query q = em.createQuery("From ArticleEntity ");
+        Query q = em.createQuery("From ArticleEntity");
         List<Article> result = (List<Article>) q.getResultStream().map(e -> new Article((ArticleEntity)e)).collect(Collectors.toList());
         em.getTransaction().commit();
         return result;
@@ -29,7 +29,12 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
 
     @Override
     public Article get(long id) {
-        throw new UnsupportedOperationException();
+        return new Article(getEntity(id));
+//        em.getTransaction().begin();
+//        ArticleEntity a = (ArticleEntity) em.createNativeQuery("Select a from ArticleEntity a where id = " +
+//                id).getSingleResult();
+//        em.getTransaction.commit();
+//        return new Article(a);
     }
 
     @Override
@@ -43,12 +48,27 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     }
 
     @Override
-    public void delete(Article obj) {
+    public void delete(long id) {
+        ArticleEntity ae = getEntity(id)
+        em.geTransaction().begin();
+        em.remove(ae);
+        em.getTransaction().commit();
 
     }
 
     @Override
-    public void update(Article obj) {
+    public void update(long id) {
         throw new UnsupportedOperationException();
+    }
+
+
+    private ArticleEntity getEntity(long id){
+
+        em.getTransaction().begin();
+        ArticleEntity a;
+         a = (ArticleEntity) em.createNativeQuery("Select a from ArticleEntity a where id = " +
+                id).getSingleResult();
+        em.getTransaction.commit();
+        return a;
     }
 }

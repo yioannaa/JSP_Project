@@ -19,4 +19,12 @@ public class Article extends NewArticle {
         this.id = en.getId();
         this.created = en.getCreated();
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
 }

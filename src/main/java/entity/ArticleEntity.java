@@ -10,7 +10,7 @@ public class ArticleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", unique = true, nullable = false)
-    private int id;
+    private long id;
     private String content;
 
     private String title;
@@ -26,6 +26,13 @@ public class ArticleEntity {
         this.content = na.content;
         this.title = na.title;
         this.created = LocalDateTime.now();
+    }
+
+    public ArticleEntity (Article a){
+        this.content = a.content;
+        this.title = a.title;
+        this.created = a.created;
+        this.content = a.content;
     }
 
     public ArticleEntity() {

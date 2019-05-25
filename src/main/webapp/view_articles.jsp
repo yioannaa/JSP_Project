@@ -12,6 +12,7 @@
 <%@include file="head.jspf"%>
 <body>
     <div class="container">
+        <%--
         <sql:setDataSource var="base"
               driver="com.mysql.cj.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/blog?serverTimezone=UTC"
@@ -21,6 +22,7 @@
         <sql:query var="aricles" dataSource="${base}">
             SELECT * FROM ARTICLE
         </sql:query>sql
+        --%>
 
         <table>
             <tr>
@@ -28,10 +30,13 @@
                     Title
                 </th>
             </tr>
-            <c:forEach var="article" items ="${articles.rows}">
+            <c:forEach var="article" items ="${requestScope.articles}">
                 <tr>
                     <td>
                 <a href="/project_jsp_blog_war/article?id=${article.id}">${article.title}</a>
+                    </td>
+                    <td>
+                        <a href="article?action=delete&id=${article.id}">Delete</a>
                     </td>
                 </tr>
             </c:forEach>

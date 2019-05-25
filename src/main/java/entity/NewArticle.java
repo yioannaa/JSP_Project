@@ -9,4 +9,12 @@ public class NewArticle {
         this.content = content;
         this.title = title;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

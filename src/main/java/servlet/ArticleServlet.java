@@ -22,7 +22,6 @@ import java.util.List;
 @WebServlet(urlPatterns = "/article")
 public class ArticleServlet extends HttpServlet {
 
-    private EntityManager em;
     ArticleRepository repo;
 
     @Override
@@ -43,8 +42,39 @@ public class ArticleServlet extends HttpServlet {
 //            out.println(a.created);
 //        }
 
-        RequestDispatcher rd = req.getRequestDispatcher("add_article.jsp");
-        rd.forward(req,resp);
+//        RequestDispatcher rd = req.getRequestDispatcher("add_article.jsp");
+//        rd.forward(req,resp);
+
+        String action = req.getParameter("action");
+
+        switch (action) {
+            case "viewAll": {
+                req.setAttribute("articles", repo.getAll().asJava());
+                RequestDispatcher rd = req.getRequestDispatcher("view_articles.jsp");
+                rd.forward(req, resp);
+            }
+            break;
+            case "view": {
+                long id = Long.parseLong(req.getParameter("id"));
+                req.setAttribute("article", repo.get(id));
+                RequestDispatcher rd = req.getRequestDispatcher("view_article.jsp");
+                rd.forward(req, resp);
+
+            }
+            break;
+            case "delete":{
+                long id = Long.parseLong(req.getParameter("id"));
+                repo.remove(id);
+            }
+            break;
+            case "add": {
+                RequestDispatcher rd = req.getRequestDispatcher("add_article.jsp");
+                rd.forward(req, resp);
+            }
+            break;
+        }
+
+
 
     }
 
