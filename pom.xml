@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pl.java</groupId>
-  <artifactId>blog</artifactId>
+  <artifactId>project_jsp_blog</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>blooog Maven Webapp</name>
+  <name>blog Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -66,6 +66,12 @@
       <artifactId>hibernate-entitymanager</artifactId>
       <version>5.4.1.Final</version>
     </dependency>
+
+      <dependency>
+          <groupId>io.vavr</groupId>
+          <artifactId>vavr</artifactId>
+          <version>0.9.3</version>
+      </dependency>
   </dependencies>
 
 

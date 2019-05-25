@@ -1,6 +1,7 @@
 package entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "article")
@@ -12,8 +13,19 @@ public class ArticleEntity {
     private int id;
     private String content;
 
+    private String title;
+
+    private LocalDateTime created;
+
     public ArticleEntity(String content) {
         this.content = content;
+        this.created = LocalDateTime.now();
+    }
+
+    public ArticleEntity (NewArticle na){
+        this.content = na.content;
+        this.title = na.title;
+        this.created = LocalDateTime.now();
     }
 
     public ArticleEntity() {
@@ -33,5 +45,21 @@ public class ArticleEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 }

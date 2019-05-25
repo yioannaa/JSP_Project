@@ -1,6 +1,10 @@
 package servlet;
 
+import dao.ArticleDaoJPA;
+import entity.Article;
 import entity.ArticleEntity;
+import entity.NewArticle;
+import repository.ArticleRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,25 +22,25 @@ import java.util.List;
 public class ArticleServlet extends HttpServlet {
 
     private EntityManager em;
+    ArticleRepository repo;
 
     @Override
     public void init() throws ServletException {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("blog");
-        em = factory.createEntityManager();
+        repo = new ArticleRepository(new ArticleDaoJPA((factory.createEntityManager())));
     }
 
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        em.getTransaction().begin();
-        ArticleEntity article = new ArticleEntity("article no 1");
-        em.persist(article);
-        em.persist(new ArticleEntity("article no 2"));
-        List<ArticleEntity> list = em.createQuery("from ArticleEntity ").getResultList();
+
+        repo.addArticle(new NewArticle("Super tekst", "Pierwszy"));
+        repo.addArticle(new NewArticle("Jeszcze lepszy tekst", "Już drugi"));
+        List<Article> list = repo.getAll();
         PrintWriter out = resp.getWriter();
-        for (ArticleEntity a : list){
-            out.println(a.getContent());
+        for (Article a : list) {
+            out.println(a.content);
+            out.println(a.title);
+            out.println(a.created);
         }
-        em.getTransaction().commit();
 
     }
 }
