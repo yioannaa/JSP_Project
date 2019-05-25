@@ -9,6 +9,7 @@ import repository.ArticleRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,15 +33,30 @@ public class ArticleServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        repo.addArticle(new NewArticle("Super tekst", "Pierwszy"));
-        repo.addArticle(new NewArticle("Jeszcze lepszy tekst", "Już drugi"));
-        List<Article> list = repo.getAll();
-        PrintWriter out = resp.getWriter();
-        for (Article a : list) {
-            out.println(a.content);
-            out.println(a.title);
-            out.println(a.created);
-        }
+//        repo.addArticle(new NewArticle("Super tekst", "Pierwszy"));
+//        repo.addArticle(new NewArticle("Jeszcze lepszy tekst", "Już drugi"));
+//        List<Article> list = repo.getAll();
+//        PrintWriter out = resp.getWriter();
+//        for (Article a : list) {
+//            out.println(a.content);
+//            out.println(a.title);
+//            out.println(a.created);
+//        }
 
+        RequestDispatcher rd = req.getRequestDispatcher("add_article.jsp");
+        rd.forward(req,resp);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        switch(action){
+            case "add":
+                String title = req.getParameter("title");
+                String content = req.getParameter("content");
+                repo.addArticle(new NewArticle(content,title));
+                break;
+        }
     }
 }
