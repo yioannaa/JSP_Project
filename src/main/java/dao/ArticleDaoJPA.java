@@ -33,13 +33,6 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     public Optional<Article> get(long id) {
        return getEntity(id).map(a -> new Article(a));
 
-
-        //return new Article(getEntity(id));
-//        em.getTransaction().begin();
-//        ArticleEntity a = (ArticleEntity) em.createNativeQuery("Select a from ArticleEntity a where id = " +
-//                id).getSingleResult();
-//        em.getTransaction.commit();
-//        return new Article(a);
     }
 
     @Override
@@ -55,21 +48,21 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     @Override
     public void delete(long id) {
 
-        //jakby się jednak domagało transakcji
-//        getEntity(id).ifPresent(a ->{
-//            em.getTransaction().begin();
-//            em.remove(a) ;
-//        em.getTransaction().commit();
-//        });
-
         getEntity(id).ifPresent(a ->em.remove(a));
-
-
     }
 
     @Override
-    public void update(long id) {
-        throw new UnsupportedOperationException();
+    public void update(Article obj) {
+        getEntity(obj.id).map(a->{
+            a.setTitle(obj.title);
+            a.setContent(obj.content);
+            a.setCreated(obj.created);
+            return a;
+        }).ifPresent(a -> {
+            em.getTransaction().begin();
+            em.persist(a);
+            em.getTransaction().commit();
+        });
     }
 
 

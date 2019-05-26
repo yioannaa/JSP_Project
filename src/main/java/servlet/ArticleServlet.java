@@ -34,8 +34,6 @@ public class ArticleServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
-
         String action = req.getParameter("action");
 
         switch (action) {
@@ -67,6 +65,15 @@ public class ArticleServlet extends HttpServlet {
                 rd.forward(req, resp);
             }
             break;
+            case "changeTitle":{
+                Parse.parseLong(req.getParameter("id")
+                ).ifPresent(id ->repo.get(id)
+                        .ifPresent(a -> {
+                            req.setAttribute("article", a);
+                        }));
+                RequestDispatcher rd = req.getRequestDispatcher("change_title.jsp");
+                rd.forward(req,resp);
+            }
         }
 
     }
@@ -75,12 +82,22 @@ public class ArticleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         switch(action){
-            case "add":
+            case "add": {
                 String title = Encoding.encode(req.getParameter("title"));
                 String content = Encoding.encode(req.getParameter("content"));
-                repo.addArticle(new NewArticle(content,title));
+                repo.addArticle(new NewArticle(content, title));
                 resp.sendRedirect("article?action=viewAll");
+
                 break;
+            }
+            case "updateTitle" : {
+                String title = Encoding.encode(req.getParameter("title"));
+                Parse.parseLong(req.getParameter("id"))
+                        .ifPresent(id->repo.changeTitle(id, title));
+                resp.sendRedirect("article?action=viewAll");
+
+
+            }
         }
     }
 }
