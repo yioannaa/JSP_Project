@@ -7,6 +7,7 @@ import entity.NewArticle;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -29,8 +30,11 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     }
 
     @Override
-    public Article get(long id) {
-        return new Article(getEntity(id));
+    public Optional<Article> get(long id) {
+       return getEntity(id).map(a -> new Article(a));
+
+
+        //return new Article(getEntity(id));
 //        em.getTransaction().begin();
 //        ArticleEntity a = (ArticleEntity) em.createNativeQuery("Select a from ArticleEntity a where id = " +
 //                id).getSingleResult();
@@ -50,10 +54,16 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
 
     @Override
     public void delete(long id) {
-        ArticleEntity ae = getEntity(id);
-        em.getTransaction().begin();
-        em.remove(ae);
-        em.getTransaction().commit();
+
+        //jakby się jednak domagało transakcji
+//        getEntity(id).ifPresent(a ->{
+//            em.getTransaction().begin();
+//            em.remove(a) ;
+//        em.getTransaction().commit();
+//        });
+
+        getEntity(id).ifPresent(a ->em.remove(a));
+
 
     }
 
@@ -63,13 +73,16 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     }
 
 
-    private ArticleEntity getEntity(long id){
+    private Optional<ArticleEntity> getEntity(long id){
 
-        em.getTransaction().begin();
-        ArticleEntity a;
-         a = (ArticleEntity) em.createNativeQuery("Select a from ArticleEntity a where id = " +
-                id).getSingleResult();
-        em.getTransaction().commit();
-        return a;
+        try {
+           return Optional.of(em.createQuery("Select a from ArticleEntity a where id = :id", ArticleEntity.class)
+                    .setParameter("id", id)
+                    .getSingleResult());
+        }catch (Exception e){
+            return Optional.empty();
+        }
+
+
     }
 }

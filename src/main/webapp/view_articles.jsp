@@ -6,7 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"  %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <html>
 <%@include file="head.jspf"%>
@@ -33,7 +34,7 @@
             <c:forEach var="article" items ="${requestScope.articles}">
                 <tr>
                     <td>
-                <a href="/project_jsp_blog_war/article?id=${article.id}">${article.title}</a>
+                <a href="/project_jsp_blog_war/article?action=view&id=${article.id}">${article.title}</a>
                     </td>
                     <td>
                         <a href="article?action=delete&id=${article.id}">Delete</a>

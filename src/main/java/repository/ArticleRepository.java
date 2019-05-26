@@ -5,6 +5,7 @@ import entity.Article;
 import entity.NewArticle;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public class ArticleRepository {
@@ -23,11 +24,12 @@ public class ArticleRepository {
         return dao.getAll();
     }
 
-    public Article get(long id){
+    public Optional<Article> get(long id){
         return dao.get(id);
     }
 
     public void remove(long id){
+        dao.delete(id);
 
     }
 
