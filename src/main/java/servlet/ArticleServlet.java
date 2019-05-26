@@ -4,6 +4,7 @@ import dao.ArticleDaoJPA;
 import entity.Article;
 import entity.ArticleEntity;
 import entity.NewArticle;
+import helper.Encoding;
 import repository.ArticleRepository;
 
 import javax.persistence.EntityManager;
@@ -83,9 +84,10 @@ public class ArticleServlet extends HttpServlet {
         String action = req.getParameter("action");
         switch(action){
             case "add":
-                String title = req.getParameter("title");
-                String content = req.getParameter("content");
+                String title = Encoding.encode(req.getParameter("title"));
+                String content = Encoding.encode(req.getParameter("content"));
                 repo.addArticle(new NewArticle(content,title));
+                resp.sendRedirect("article?action=viewAll");
                 break;
         }
     }
