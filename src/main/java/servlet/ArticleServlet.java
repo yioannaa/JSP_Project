@@ -24,6 +24,12 @@ import java.util.List;
 @WebServlet(urlPatterns = "/article")
 public class ArticleServlet extends HttpServlet {
 
+    public static final String ACTION_VIEW_ALL = "viewAll";
+    public static final String ACTION_VIEW = "view";
+    public static final String ACTION_DELETE = "delete";
+    public static final String ACTION_ADD = "add";
+    public static final String ACTION_CHANGE_TITLE = "changeTitle";
+    public static final String ACTION_UPDATE_TITLE = "updateTitle";
     ArticleRepository repo;
 
     @Override
@@ -37,13 +43,13 @@ public class ArticleServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         switch (action) {
-            case "viewAll": {
+            case ACTION_VIEW_ALL: {
                 req.setAttribute("articles", repo.getAll());  //asJava()) if vavr;
                 RequestDispatcher rd = req.getRequestDispatcher("view_articles.jsp");
                 rd.forward(req, resp);
             }
             break;
-            case "view": {
+            case ACTION_VIEW:{
 
                 Parse.parseLong(req.getParameter("id")
                 ).ifPresent(id -> repo.get(id)
@@ -54,18 +60,19 @@ public class ArticleServlet extends HttpServlet {
 
             }
             break;
-            case "delete":{
+            case ACTION_DELETE:{
                 Parse.parseLong(req.getParameter("id")).ifPresent(id -> repo.remove(id));
                 System.out.println(req.getParameter("id"));
-                resp.sendRedirect("article?action=viewAll");
+                resp.sendRedirect("article?actin=viewAll");
             }
             break;
-            case "add": {
+            case ACTION_ADD: {
                 RequestDispatcher rd = req.getRequestDispatcher("add_article.jsp");
                 rd.forward(req, resp);
             }
+
             break;
-            case "changeTitle":{
+            case ACTION_CHANGE_TITLE:{
                 Parse.parseLong(req.getParameter("id")
                 ).ifPresent(id ->repo.get(id)
                         .ifPresent(a -> {
@@ -73,6 +80,7 @@ public class ArticleServlet extends HttpServlet {
                         }));
                 RequestDispatcher rd = req.getRequestDispatcher("change_title.jsp");
                 rd.forward(req,resp);
+
             }
         }
 
@@ -82,7 +90,7 @@ public class ArticleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         switch(action){
-            case "add": {
+            case ACTION_ADD: {
                 String title = Encoding.encode(req.getParameter("title"));
                 String content = Encoding.encode(req.getParameter("content"));
                 repo.addArticle(new NewArticle(content, title));
@@ -90,11 +98,12 @@ public class ArticleServlet extends HttpServlet {
 
                 break;
             }
-            case "updateTitle" : {
+            case ACTION_UPDATE_TITLE : {
                 String title = Encoding.encode(req.getParameter("title"));
                 Parse.parseLong(req.getParameter("id"))
                         .ifPresent(id->repo.changeTitle(id, title));
                 resp.sendRedirect("article?action=viewAll");
+
 
 
             }
