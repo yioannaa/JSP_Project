@@ -1,9 +1,8 @@
 package dao;
 
 
-import entity.Article;
+import io.vavr.collection.List;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T, U> {

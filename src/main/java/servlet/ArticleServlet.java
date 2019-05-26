@@ -30,6 +30,8 @@ public class ArticleServlet extends HttpServlet {
     public static final String ACTION_ADD = "add";
     public static final String ACTION_CHANGE_TITLE = "changeTitle";
     public static final String ACTION_UPDATE_TITLE = "updateTitle";
+    public static final String ACTION = "action";
+
     ArticleRepository repo;
 
     @Override
@@ -40,11 +42,12 @@ public class ArticleServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        String action = req.getParameter(ACTION);
+
 
         switch (action) {
             case ACTION_VIEW_ALL: {
-                req.setAttribute("articles", repo.getAll());  //asJava()) if vavr;
+                req.setAttribute("articles", repo.getAll().asJava());
                 RequestDispatcher rd = req.getRequestDispatcher("view_articles.jsp");
                 rd.forward(req, resp);
             }
@@ -63,7 +66,7 @@ public class ArticleServlet extends HttpServlet {
             case ACTION_DELETE:{
                 Parse.parseLong(req.getParameter("id")).ifPresent(id -> repo.remove(id));
                 System.out.println(req.getParameter("id"));
-                resp.sendRedirect("article?actin=viewAll");
+                resp.sendRedirect("article?"+ACTION+"="+ACTION_VIEW_ALL);
             }
             break;
             case ACTION_ADD: {
@@ -88,13 +91,13 @@ public class ArticleServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
+        String action = req.getParameter(ACTION);
         switch(action){
             case ACTION_ADD: {
                 String title = Encoding.encode(req.getParameter("title"));
                 String content = Encoding.encode(req.getParameter("content"));
                 repo.addArticle(new NewArticle(content, title));
-                resp.sendRedirect("article?action=viewAll");
+                resp.sendRedirect("article?"+ACTION+"="+ACTION_VIEW_ALL);
 
                 break;
             }
@@ -102,7 +105,7 @@ public class ArticleServlet extends HttpServlet {
                 String title = Encoding.encode(req.getParameter("title"));
                 Parse.parseLong(req.getParameter("id"))
                         .ifPresent(id->repo.changeTitle(id, title));
-                resp.sendRedirect("article?action=viewAll");
+                resp.sendRedirect("article?"+ACTION+"="+ACTION_VIEW_ALL);
 
 
 

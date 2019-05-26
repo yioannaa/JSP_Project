@@ -3,8 +3,7 @@ package repository;
 import dao.Dao;
 import entity.Article;
 import entity.NewArticle;
-
-import java.util.List;
+import io.vavr.collection.List;
 import java.util.Optional;
 
 

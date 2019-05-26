@@ -6,9 +6,10 @@ import entity.NewArticle;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import io.vavr.collection.List;
+
 
 
 public class ArticleDaoJPA implements Dao<Article, NewArticle>{
@@ -24,7 +25,7 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
     public List<Article> getAll() {
         em.getTransaction().begin();
         Query q = em.createQuery("From ArticleEntity");
-        List<Article> result = (List<Article>) q.getResultStream().map(e -> new Article((ArticleEntity)e)).collect(Collectors.toList());
+        List<Article> result = List.ofAll(q.getResultStream().map(e->new Article((ArticleEntity) e)));
         em.getTransaction().commit();
         return result;
     }
