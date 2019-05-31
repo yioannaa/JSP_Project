@@ -11,5 +11,8 @@
 <body>
 <h1>${requestScope.article.title}</h1>
 <p>${requestScope.article.content}</p>
+<div class="container col-6">
+    <a href="article?action=main">Main</a>
+</div>
 </body>
 </html>

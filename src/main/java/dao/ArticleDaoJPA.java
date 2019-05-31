@@ -77,6 +77,15 @@ public class ArticleDaoJPA implements Dao<Article, NewArticle>{
             return Optional.empty();
         }
 
+    }
+    @Override
+    public List<Article>getLimited(int from, int to){
+        em.getTransaction().begin();
+        Query q = em.createQuery("From ArticleEntity");
+        List<Article> limitedResult = List.ofAll(q.getResultStream()
+                .skip(from).limit(to-from).map(e->new Article((ArticleEntity) e)));
+        em.getTransaction().commit();
+        return limitedResult;
 
     }
 }

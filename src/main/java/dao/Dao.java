@@ -1,6 +1,7 @@
 package dao;
 
 
+import entity.Article;
 import io.vavr.collection.List;
 
 import java.util.Optional;
@@ -15,4 +16,7 @@ public interface Dao<T, U> {
         void delete(long id);
 
         void update(T obj);
+
+
+        List<T>getLimited(int from, int to);
 }

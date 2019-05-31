@@ -2,10 +2,11 @@
 
 <html>
 <body>
-<h2>Hello World!</h2>
-<a href ="article?action=viewAll">List of articles</a>
+<h2>Influential movies</h2>
+<a href ="article?action=viewLimited">List of articles</a>
 <a href = "article?action=add">Add the article</a>
 <a href = "user?action=add">Register</a>
+<a href="user?action=viewAll">Users</a>
 
 </body>
 </html>

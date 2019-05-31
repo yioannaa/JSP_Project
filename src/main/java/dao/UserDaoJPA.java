@@ -64,4 +64,9 @@ public class UserDaoJPA implements Dao<User, NewUser> {
         }
 
     }
+
+    @Override
+    public List<User> getLimited(int from, int to) {
+        return null;
+    }
 }

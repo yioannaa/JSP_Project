@@ -20,5 +20,8 @@
                 </div>
             </form>
         </div>
+<div class="container col-6">
+    <a href="article?action=main">Main</a>
+</div>
 </body>
 </html>

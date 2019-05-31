@@ -15,6 +15,10 @@ public class ArticleRepository {
         this.dao = dao;
     }
 
+    public ArticleRepository() {
+
+    }
+
     public void addArticle(NewArticle na){
         dao.save(na);
     }
@@ -34,6 +38,10 @@ public class ArticleRepository {
     public void changeTitle(long id, String title){
         dao.get(id).map(old-> new Article (old.content, title, old.id, old.created))
                 .ifPresent(a->dao.update(a));
+    }
+
+    public List<Article>getLimited(int from, int to){
+        return dao.getLimited(from, to);
     }
 
 }

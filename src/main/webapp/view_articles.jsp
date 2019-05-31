@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"  %>
-<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <html>
 <%@include file="head.jspf"%>
 <body>
@@ -28,7 +28,7 @@
         <table>
             <tr>
                 <th>
-                    Title
+                    Articles
                 </th>
             </tr>
             <c:forEach var="article" items ="${requestScope.articles}">
@@ -47,6 +47,10 @@
             </c:forEach>
         </table>
 
+
+    </div>
+    <div class="container col-6">
+        <a href="article?action=main">Main</a>
     </div>
 
 </body>
